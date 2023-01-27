@@ -9,7 +9,7 @@ if (isset($_POST['submit'])) {
     $email = filter_var($email, FILTER_SANITIZE_STRING);
     $pass = $_POST['pass'];
     $pass = filter_var($pass, FILTER_SANITIZE_STRING);
-    
+
     $verify_email = $conn->prepare("SELECT * FROM `users` WHERE email = ? LIMIT 1");
     $verify_email->execute([$email]);
 
@@ -22,6 +22,7 @@ if (isset($_POST['submit'])) {
         if ($verfiy_pass == 1) {
             setcookie('user_id', $fetch['id'], time() + 60 * 60 * 24 * 30, '/');
             header('location:all_posts.php');
+            $success_msg[] = 'Registered successfully!';
         } else {
             $warning_msg[] = 'Incorrect your password not matched!';
         }
@@ -63,7 +64,12 @@ if (isset($_POST['submit'])) {
         </form>
     </section>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script src="js/script.js"></script>
 
+    <?php
+    include 'components/alers.php';
+    ?>
 </body>
 
 </html>
