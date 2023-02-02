@@ -149,6 +149,46 @@ if (isset($_GET['get_id'])) {
             <h1>user's reviews</h1>
             <a href="add_review.php?get_id=<?= $get_id; ?>" class="inline-btn" style="margin-top: 0;">Add Reviews</a>
         </div>
+
+
+        <div class="box-container">
+            <?php
+
+            $select_reviews = $conn->prepare("SELECT * FROM `reviews` WHERE post_id = ?");
+            $select_reviews->execute([$get_id]);
+            if ($select_reviews->rowCount() > 0) {
+                while ($fetch_review = $select_reviews->fetch(PDO::FETCH_ASSOC)) {
+
+            ?>
+                    <div class="box" <?php if ($fetch_review['user_id'] == $user_id) {
+                                            echo 'style="order:-1;"';
+                                        }; ?>>
+                        <?php
+                        $select_user = $conn->prepare("SELECT * FROM `users` WHERE id = ?");
+                        $select_user->execute([$fetch_review['user_id']]);
+
+                        while ($fetch_user = $select_user->fetch(PDO::FETCH_ASSOC)) {
+                        ?>
+                            <div class="user">
+                                <?php if ($fetch_user['image'] != '') {  ?>
+                                    <img src="uploaded_files/<?= $fetch_user['image']; ?>" alt="">
+                                <?php } else { ?>
+                                    <h3><?= substr($fetch_user['name'], 0, 1) ?></h3>?
+                                <?php } ?>
+                                <div class="">
+                                    <p><?= $fetch_user['name']; ?></p>
+                                    <span> <?= $fetch_review['date']; ?></span>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+            <?php
+                }
+            } else {
+                echo '<p class="empty">No review found</p>';
+            }
+            ?>
+        </div>
     </div>
 
 
