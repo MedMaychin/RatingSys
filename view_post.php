@@ -158,7 +158,6 @@ if (isset($_GET['get_id'])) {
             $select_reviews->execute([$get_id]);
             if ($select_reviews->rowCount() > 0) {
                 while ($fetch_review = $select_reviews->fetch(PDO::FETCH_ASSOC)) {
-
             ?>
                     <div class="box" <?php if ($fetch_review['user_id'] == $user_id) {
                                             echo 'style="order:-1;"';
@@ -180,7 +179,30 @@ if (isset($_GET['get_id'])) {
                                     <span> <?= $fetch_review['date']; ?></span>
                                 </div>
                             </div>
-                        <?php } ?>
+                        <?php }; ?>
+
+                        <div class="ratings">
+                            <?php if ($fetch_review['rating'] == 1) { ?>
+                                <p style="background:var(--red)">
+                                    <i class="fas fa-star"></i>
+                                    <span><?= $fetch_review['rating']; ?></span>
+                                </p>
+                            <?php }; ?>
+
+                            <?php if ($fetch_review['rating'] == 2) { ?>
+                                <p style="background:var(--orange)">
+                                    <i class="fas fa-star"></i>
+                                    <span><?= $fetch_review['rating']; ?></span>
+                                </p>
+                            <?php }; ?>
+
+                            <?php if ($fetch_review['rating'] == 3) { ?>
+                                <p style="background:var(--red)">
+                                    <i class="fas fa-star"></i>
+                                    <span><?= $fetch_review['rating']; ?></span>
+                                </p>
+                            <?php }; ?>
+                        </div>
                     </div>
             <?php
                 }
