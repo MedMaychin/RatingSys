@@ -197,12 +197,39 @@ if (isset($_GET['get_id'])) {
                             <?php }; ?>
 
                             <?php if ($fetch_review['rating'] == 3) { ?>
-                                <p style="background:var(--red)">
+                                <p style="background:var(--orange)">
+                                    <i class="fas fa-star"></i>
+                                    <span><?= $fetch_review['rating']; ?></span>
+                                </p>
+                            <?php }; ?>
+
+                            <?php if ($fetch_review['rating'] == 4) { ?>
+                                <p style="background:var(--main-color)">
+                                    <i class="fas fa-star"></i>
+                                    <span><?= $fetch_review['rating']; ?></span>
+                                </p>
+                            <?php }; ?>
+
+                            <?php if ($fetch_review['rating'] == 5) { ?>
+                                <p style="background:var(--main-color)">
                                     <i class="fas fa-star"></i>
                                     <span><?= $fetch_review['rating']; ?></span>
                                 </p>
                             <?php }; ?>
                         </div>
+
+                        <h3 class="title"><?= $fetch_review['title'] ?></h3>
+                        <?php if ($fetch_review['description'] != '') { ?>
+                            <p class="description"><?= $fetch_review['description']; ?></p>
+                        <?php } ?>
+
+                        <?php if ($fetch_review['user_id'] == $user_id) { ?>
+                            <form action="" method="post" class="flex-btn">
+                                <input type="hidden" name="delete_id" value="<?= $fetch_review['id']; ?>">
+                                <a href="update_review.php?get_id=<?= $fetch_review['id']; ?>" class="inline-option-btn">Edit Review</a>
+                                <input type="submit" value="delete review" class="inline-delete-btn" name="delete_review">
+                            </form>
+                        <?php } ?>
                     </div>
             <?php
                 }
