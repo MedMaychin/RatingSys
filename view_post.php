@@ -8,6 +8,28 @@ if (isset($_GET['get_id'])) {
     header('location:all_posts.php');
 }
 
+
+if (isset($_POST['delete_review'])) {
+    $delete_id = $_POST['delete_id'];
+    $delete_id = filter_var($delete_id, FILTER_SANITIZE_STRING);
+
+
+    $verify_delete = $conn->prepare("SELECT * FROM `reviews` WHERE id =?");
+    $verify_delete->execute([$delete_id]);
+
+    if ($verify_delete->rowCount() > 0) {
+        $delete_review =  $conn->prepare("DELETE FROM `reviews` WHERE id =?");
+        $delete_review->execute([$delete_id]);
+
+        $success_review[] = 'Deleted Successfully';
+    } else {
+        $warning_review[] = 'Review already deleted';
+    }
+}
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -227,7 +249,7 @@ if (isset($_GET['get_id'])) {
                             <form action="" method="post" class="flex-btn">
                                 <input type="hidden" name="delete_id" value="<?= $fetch_review['id']; ?>">
                                 <a href="update_review.php?get_id=<?= $fetch_review['id']; ?>" class="inline-option-btn">Edit Review</a>
-                                <input type="submit" value="delete review" class="inline-delete-btn" name="delete_review">
+                                <input type="submit" class="inline-delete-btn" value="delete review" name="delete_review" onclick="return confrim('Are u Sure delete this review ');">
                             </form>
                         <?php } ?>
                     </div>

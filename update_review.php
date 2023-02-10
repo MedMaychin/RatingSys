@@ -9,29 +9,19 @@ if (isset($_GET['get_id'])) {
 }
 
 if (isset($_POST['submit']) !=  '') {
-    if ($user_id !=  '') {
-        $id = create_unique_id();
-        $title = $_POST['title'];
-        $title = filter_var($title,  FILTER_SANITIZE_STRING);
-        $description = $_POST['description'];
-        $description = filter_var($description,  FILTER_SANITIZE_STRING);
-        $rating = $_POST['rating'];
-        $rating = filter_var($rating,  FILTER_SANITIZE_STRING);
 
-        $verify_review = $conn->prepare("SELECT * FROM `reviews` WHERE post_id = ? AND user_id = ?");
-        $verify_review->execute([$get_id, $user_id]);
+    $title = $_POST['title'];
+    $title = filter_var($title,  FILTER_SANITIZE_STRING);
+    $description = $_POST['description'];
+    $description = filter_var($description,  FILTER_SANITIZE_STRING);
+    $rating = $_POST['rating'];
+    $rating = filter_var($rating,  FILTER_SANITIZE_STRING);
 
-        if ($verify_review->rowCount() > 0) {
-            $warning_msg[] = 'Your review already Added!';
-        } else {
-            $add_review = $conn->prepare("INSERT INTO `reviews`(id,post_id,user_id,rating,title,description) VALUES(?,?,?,?,?,?)");
-            $add_review->execute([$id, $get_id, $user_id, $rating, $title, $description]);
 
-            $success_msg[] = 'Review Added!';
-        }
-    } else {
-        $warning_msg[] = 'Please Login First!';
-    }
+    $update_review = $conn->prepare("UPDATE `reviews` SET rating= ?, title= ?, description= ? WHERE id= ?");
+    $update_review->execute([$rating,$title,$description,$get_id]);
+
+    $success_msg[] = 'Review Updated!';
 }
 
 ?>
